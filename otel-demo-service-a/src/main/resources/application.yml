@@ -1,0 +1,17 @@
+OTEL_COLLECTOR_ADDRESS: "http://localhost:4317"
+server:
+  port: 8081
+
+spring:
+  application:
+    name: otel-demo-service-a
+  sleuth:
+    propagation:
+      type: B3
+    otel:
+      exporter:
+        otel:
+          otlp:
+            endpoint: ${OTEL_COLLECTOR_ADDRESS}
+      config:
+        trace-id-ratio-based: 1.0
