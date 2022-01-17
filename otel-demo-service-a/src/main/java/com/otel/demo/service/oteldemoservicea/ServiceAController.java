@@ -15,17 +15,22 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 class ServiceAController {
 
+    private final RestTemplate restTemplate;
+
+    public ServiceAController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     @GetMapping(value = "/service-a")
     public ResponseEntity<String> sluethServiceA() {
         try {
             log.info("Inside service-a..");
-            RestTemplate restTemplate = new RestTemplate();
             String response = (String) restTemplate.exchange("http://localhost:8082/service-b", HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
             }).getBody();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Internal-server-error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
